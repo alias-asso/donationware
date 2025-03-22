@@ -1,0 +1,205 @@
+body {
+  color: #c0caf5;
+  /* background: rgb(59, 57, 93); */
+  background: linear-gradient(
+    163deg,
+    rgba(10, 7, 61, 1) 0%,
+    rgba(14, 14, 46, 1) 30%,
+    rgba(1, 0, 28, 1) 100%
+  );
+  font-family: sans-serif;
+}
+
+main {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+
+.top {
+  width: 100%;
+  height: 20%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  display: block;
+  max-width: 250px;
+  font-size: 3em;
+  margin: auto;
+
+  /* generate a filter for a specific color https://codepen.io/sosuke/pen/Pjoqqp */
+  filter: brightness(0) saturate(100%) invert(82%) sepia(4%) saturate(2602%) hue-rotate(194deg) brightness(100%) contrast(93%);
+}
+
+.list {
+  margin: auto;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 730px) {
+  .list {
+    width: 90%;
+  }
+}
+
+.list-element {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  border-radius: 10px;
+  background-color: #1a1a41;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.infos {
+  height: auto;
+  width: 100%;
+  padding: 20px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  box-sizing: border-box;
+}
+
+.infos p,
+.infos h3,
+.infos ul {
+  margin: 0;
+}
+
+.infos h3 {
+  margin-bottom: 20px;
+}
+
+.about ul {
+  width: 90%;
+  padding-left: 0px;
+}
+
+
+
+.link {
+  font-size: 2.1em;
+  color: #c0caf5;
+  text-decoration: initial;
+  transition: all 0.1s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  place-items: center;
+  gap: 10px;
+}
+
+.link:hover {
+  transform: scale(1.05,1.05);
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+
+  /* generate a filter for a specific color https://codepen.io/sosuke/pen/Pjoqqp */
+  filter: invert(90%) sepia(34%) saturate(2572%) hue-rotate(182deg) brightness(99%) contrast(94%);
+}
+
+.galias {
+  position: absolute;
+  float:none;
+  width: 50px;
+  bottom: 5px;
+  right: 20px;
+  transition: all 10s;
+}
+
+.galias:hover {
+  transform: translateX(-1920px);
+}
+
+.statuts-alias {
+  padding: 0.5rem 1rem 0.5rem 1rem ;
+  align-self: start;
+  /* color: #5d5c8c; */
+  color: #c0caf5; 
+  /* color: #ffffff; */
+  border-width: 1px;
+  /* background-color: red; */
+
+  /* background-color: black; */
+  text-decoration: none;
+}
+
+
+footer {
+  background: linear-gradient(
+  163deg,
+  rgba(10, 7, 61, 1) 0%,
+  rgba(14, 14, 46, 1) 30%,
+  rgba(1, 0, 28, 1) 100%
+  );
+
+  padding: 1.5rem;
+
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 730px) {
+  .infos {
+    width: 100%;
+    justify-content: center;
+    justify-items: center;
+  }
+  .galias {
+    display: none;
+  }
+}
+
+/* Light Theme */
+@media (prefers-color-scheme: light) {
+  body {
+    background: rgb(249,249,255);
+    background: linear-gradient(163deg, rgba(249,249,255,1) 0%, rgba(206,206,254,1) 30%, rgba(166,163,255,1) 100%);
+  }
+
+  .list-element {
+    background-color: #f9f9ff;
+    color: #5d5c8c;
+  }
+
+  .statuts-alias{
+    color: #5d5c8c;
+  }
+
+  /* generate a filter for a specific color https://codepen.io/sosuke/pen/Pjoqqp */
+  .icon {
+    filter: invert(41%) sepia(13%) saturate(1423%) hue-rotate(202deg) brightness(84%) contrast(86%);
+  }
+
+  /* generate a filter for a specific color https://codepen.io/sosuke/pen/Pjoqqp */
+  .logo {
+    filter: brightness(0) saturate(100%) invert(41%) sepia(13%) saturate(1423%) hue-rotate(202deg) brightness(84%) contrast(86%);
+  }
+
+  footer {
+    background: linear-gradient(163deg, rgba(249,249,255,1) 0%, rgba(206,206,254,1) 30%, rgba(166,163,255,1) 100%);
+
+  }
+}
+
+
+main {
+  display: flex;
+  flex-direction: column;
+}

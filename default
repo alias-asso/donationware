@@ -1,0 +1,11 @@
+PROMPT 0
+TIMEOUT 15
+DEFAULT menu.c32
+MENU TITLE ALIAS - PXE Installation Server
+
+LABEL fedora41
+ MENU DEFAULT
+ MENU LABEL ^Fedora 41 (Auto-install)
+ KERNEL f41/vmlinuz
+ INITRD f41/initrd.img
+ APPEND inst.repo=http://192.168.1.1/fedora/41/x86_64 inst.ks=http://192.168.1.1/fedora/41/x86_64/ks.cfg ip=dhcp
