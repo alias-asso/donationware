@@ -1,5 +1,5 @@
 # Set here the Fedora version
-version=41
+version=42
 
 # Define global paths/variables
 fedora_release=http://download.fedoraproject.org/pub/fedora/linux/releases/$version
@@ -8,7 +8,7 @@ html_fedora=$html/fedora/$version/x86_64
 aims=/srv/aims
 
 # Install all the packages
-dnf install -y tftp-server syslinux grub2-efi-x64-modules dhcp-server dnf-plugins-core createrepo_c httpd nodejs cronie
+dnf install -y tftp-server syslinux grub2-efi-x64-modules dhcp-server dnf-plugins-core httpd nodejs cronie
 
 # Setup boot architecture
 grub2-mknetdir --net-directory=/var/lib/tftpboot --subdir=/boot/grub -d /usr/lib/grub/i386-pc
@@ -37,18 +37,14 @@ systemctl enable httpd.service
 
 # Deploy the Fedora image
 mkdir -p $html_fedora/images
-wget $fedora_release/Everything/x86_64/os/images/install.img -O $html_fedora/images/install.img
+wget $fedora_release/Workstation/x86_64/iso/Fedora-Workstation-Live-42-1.1.x86_64.iso -O /var/tmp/fedora-livecd.iso
+mount -o loop /var/tmp/fedora-livecd.iso /mnt
+cp /mnt/LiveOS/squashfs.img $html_fedora/images/
+umount /mnt
+rm -f /var/tmp/fedora-livecd.iso
 
 # Deploy the kickstart file
 cp ks.cfg $html_fedora/ks.cfg
-
-# Create a RPM repository
-# Download each package using DNF from packages.txt
-cat packages.txt | tr '\n' ' ' | xargs  dnf download --destdir=$html_fedora
-
-mkdir -p $html_fedora/repodata
-wget https://pagure.io/fedora-comps/raw/main/f/comps-f$version.xml.in -O $html_fedora/repodata/comps.xml
-createrepo_c --groupfile $html_fedora/repodata/comps.xml $html_fedora
 
 # Setup AIMS
 mkdir -p $aims
@@ -71,6 +67,7 @@ systemctl start network.target
 cp dhcpd.conf /etc/dhcp/
 cp dhcp_on_commit.sh /usr/local/bin
 systemctl restart dhcpd
+systemctl enable dhcpd
 
 # Setup firewall
 firewall-cmd --permanent --add-service tftp
@@ -82,4 +79,4 @@ firewall-cmd --reload
 chown -R apache:apache $html
 chown -R apache:apache $aims
 chmod 755 -R /var/lib/tftpboot
-chmod 755 /usr/bin/local/dhcp_on_commit.sh
+chmod 755 /usr/local/bin/dhcp_on_commit.sh
