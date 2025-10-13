@@ -12,8 +12,7 @@ This repository contains all the necessary files to deploy a PXE server on a Fed
 - `dhcp_on_commit.sh` : Script to update AIMS when a client machine is connected to the network ;
 
 ### PXE
-- `grub.cfg` : GRUB configuration file ;
-- `default` : SYSLINUX configuration file (not used) ;
+- `grub.cfg` : GRUB configuration file.
 
 ### Fedora installation
 - `ks.cfg` : Kickstart file for Fedora 42 installation ;
