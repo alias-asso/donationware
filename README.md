@@ -39,6 +39,7 @@ Note: In order to use the reporter correctly, you need to connect the computer t
 | Reboot | Reboot the client machine |
 | Shutdown | Shutdown the client machine |
 | UEFI Firmware Settings | Access UEFI firmware settings (if supported) |
+
 The fallback is automatically used if the first option fails. It can be useful if the client machine has issues with HTTP.
 
 ### How to boot
@@ -69,3 +70,8 @@ After the installation, the client machine will be shutdown. You can now boot it
 
 ## Reporter
 The `/reporter` directory contains a NodeJS application. It's designed to send the data received from the DHCP server and Anaconda installer to Google Sheet and keep track of the installation process/computer specs.
+
+# Usefull links
+- [Kickstart documentation](https://docs.redhat.com/fr/documentation/red_hat_enterprise_linux/7/html/installation_guide/sect-kickstart-syntax)
+- [GRUB documentation](https://www.gnu.org/software/grub/manual/grub/grub.html#Network)
+- [Google Sheet API documentation](https://developers.google.com/workspace/sheets/api/guides/concepts)
