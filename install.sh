@@ -12,12 +12,8 @@ html_fedora=$html_fedora_part/x86_64
 set -e
 cd "$(dirname "$0")"
 
-echo "Before anything, please edit the repoter/reporter.service file to set the environment variables for the Google Sheets API (SPREADSHEET_ID, SHEET_ID and TABLE_ID)."
-pause "Press any key to open nano..."
-nano reporter/reporter.service
-
 # Install all the packages
-dnf install -y grub2-efi-x64-modules dhcp-server tftp-server httpd dnf-plugins-core nodejs-npm
+dnf install -y grub2-efi-x64-modules dhcp-server tftp-server httpd nodejs-npm
 
 # Start the TFTP server
 systemctl start tftp.service
@@ -79,12 +75,16 @@ systemctl restart dhcpd
 
 # Setup permissions
 chown -R apache:apache $html
-chmod 755 -R /var/lib/tftpboot
+chmod 744 -R /var/lib/tftpboot
 
 # Setup the reporter service
 cp -R reporter/ /var/lib/reporter
 npm install --prefix /var/lib/reporter
 npm run build --prefix /var/lib/reporter
+
+echo "Before continuing, please set the environment variables for the Google Sheets API (SPREADSHEET_ID, SHEET_ID and TABLE_ID) of the Reporter service."
+pause "Press any key to open nano..."
+nano reporter/reporter.service
 
 mv /var/lib/reporter/reporter.service /etc/systemd/system/
 systemctl daemon-reload
