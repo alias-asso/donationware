@@ -1,5 +1,7 @@
-# Ignore AIMS node_modules
+# Ignore the Reporter build artifacts and dependencies
 node_modules/
+dist/
 package-lock.json
+credentials.json
 
 wget-log
