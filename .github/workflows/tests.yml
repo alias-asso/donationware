@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  validate-kickstart:
+    name: Validate Kickstart File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Anaconda Kickstart Validator
+        run: |
+          pip install pykickstart
+
+      - name: Validate ks.cfg
+        run: |
+          ksvalidator pxe/fedora/ks.cfg
+
+  validate-reporter-build:
+    name: Validate Reporter Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: |
+          npm install --prefix reporter
+
+      - name: Run build
+        run: |
+          npm run build --prefix reporter

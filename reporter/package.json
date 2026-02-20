@@ -1,0 +1,21 @@
+{
+  "name": "reporter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Delaye-Maillot, Kyllian",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
+    "googleapis": "^171.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/express": "^5.0.6"
+  }
+}

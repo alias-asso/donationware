@@ -1,0 +1,19 @@
+[Unit]
+Description=Reporting service for Donationware
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/node dist/
+WorkingDirectory=/var/lib/reporter/
+
+Restart=on-failure
+
+Environment="NODE_ENV=production"
+Environment="PORT=5000"
+Environment="CREDENTIALS=/var/lib/reporter/credentials.json"
+Environment="SPREADSHEET_ID=<YOUR_SPREADSHEET_ID>"
+Environment="SHEET_ID=<YOUR_SHEET_ID>"
+Environment="TABLE_ID=<YOUR_TABLE_ID>"
+
+[Install]
+WantedBy=multi-user.target
