@@ -18,7 +18,7 @@ jobs:
 
       - name: Validate ks.cfg
         run: |
-          pykickstart --check pxe/fedora/ks.cfg
+          ksvalidator pxe/fedora/ks.cfg
 
   validate-reporter-build:
     name: Validate Reporter Build
@@ -32,8 +32,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
+          npm install --prefix reporter
 
       - name: Run build
         run: |
-          npm run build
+          npm run build --prefix reporter
