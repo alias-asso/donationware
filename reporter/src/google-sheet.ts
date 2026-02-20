@@ -17,7 +17,7 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: 'v4', auth });
 
 // Utils
-const steps = ['Initialisation', 'Effacement', 'Installation', 'Terminé', 'Erreur'];
+const steps = ['Initialisation', 'Effacement', 'Installation', 'Terminée', 'Erreur'];
 
 const bindStepToName = (step: number): string => {
     if (step < 0 || step >= steps.length) return `Étape inconnue`;
@@ -78,11 +78,12 @@ export const addComputerLine = async (data: Computer) => {
 
     // Convert values in "RowData" for the API
     const rowData = values.map(val => {
-        const keyType = val && val.toString().startsWith('=') ? 'formulaValue' : 'userEnteredValue';
-        const valueType = typeof val === 'number' ? 'numberValue' : 'stringValue';
+        let valueType = 'stringValue';
+        if (typeof val === 'number') valueType = 'numberValue';
+        else if (val?.startsWith('=')) valueType = 'formulaValue';
 
         return {
-            [keyType]: { [valueType]: val ? val.toString() : "" }
+            'userEnteredValue': { [valueType]: val ? val.toString() : "" }
         };
     });
 
