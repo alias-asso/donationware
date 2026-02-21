@@ -73,7 +73,7 @@ jobs:
                   sed -i "s/^iso_name=.*/iso_name=$iso_name/" install.sh
 
                   # Update .treeinfo
-                  sed -i "s/version = $current_version/version = $latest_version/" pxe/.treeinfo
+                  sed -i "s/version = $current_version/version = $latest_version/" pxe/fedora/.treeinfo
 
                   # Update Grub configuration
                   sed -i "$fullname_sed_command" pxe/grub.cfg
@@ -87,7 +87,7 @@ jobs:
 
             - name: Commit changes
               run: |
-                  git add install.sh pxe/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
+                  git add install.sh pxe/fedora/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
                   git commit -m "Update Fedora version to ${{ needs.check-fedora-version.outputs.latest_version }}"
 
             - name: Create a pull request
