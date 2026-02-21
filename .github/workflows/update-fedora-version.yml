@@ -50,6 +50,9 @@ jobs:
         if: needs.check-fedora-version.outputs.current_version != needs.check-fedora-version.outputs.latest_version
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
             - name: Create a new branch for the update
               run: |
                   git config user.name "github-actions[bot]"
