@@ -6,7 +6,7 @@ on:
             - feat/action-to-update-fedora
 
 jobs:
-    update-fedora-version:
+    check-fedora-version:
         name: Update Fedora Version
         runs-on: ubuntu-latest
         steps:
@@ -17,15 +17,11 @@ jobs:
               id: get_fedora_version
               run: |
                   fedora_releases=$(curl -s -L https://fedoraproject.org/releases.json)
-                  
+
                   latest_version=$(echo "$fedora_releases" | jq -r '[.[].version | select(test("^[0-9]+$"))] | max')
-                  echo "Latest Fedora version: $latest_version"
-                  
 
-                  iso_url=$(echo "$fedora_releases" | jq -r '.[] | select(.version == "$latest_version" and .arch == "x86_64" and .variant == "Workstation") | .link')
+                  iso_url=$(echo "$fedora_releases" | jq -r '.[] | select(.version == '\"$latest_version\"' and .arch == "x86_64" and .variant == "Workstation") | .link')
                   iso_name=$(basename "$iso_url")
-
-                  echo "ISO name: $iso_name"
 
                   echo "latest_version=$latest_version" >> $GITHUB_OUTPUT
                   echo "iso_name=$iso_name" >> $GITHUB_OUTPUT
@@ -34,53 +30,58 @@ jobs:
               id: compare_versions
               run: |
                   current_version=$(grep -E '^version=[0-9]+' install.sh | cut -d= -f2)
+                  
+                  echo "Latest Fedora version: ${{ steps.get_fedora_version.outputs.latest_version }}"
                   echo "Current version in install.sh: $current_version"
+
                   if [ "$current_version" == "${{ steps.get_fedora_version.outputs.latest_version }}" ]; then
-                      echo "The Fedora version in install.sh is already up to date."
-                      exit 0
+                      echo "Fedora is already up to date."
                   fi
 
                   echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
+    update-files:
+        name: Update Files with Latest Fedora Version
+        needs: check-fedora-version
+        if: needs.check-fedora-version.result.current_version != needs.check-fedora-version.outputs.latest_version
+        runs-on: ubuntu-latest
+        steps:
             - name: Create a new branch for the update
-              if: steps.compare_versions.outputs.current_version != steps.get_fedora_version.outputs.latest_version
               run: |
-                    git config user.name "github-actions[bot]"
-                    git config user.email "github-actions[bot]@users.noreply.github.com"
-                    git checkout -b update-fedora-version
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git checkout -b update-fedora-version
 
             - name: Update files with the latest version
               run: |
-                    current_version=${{ steps.compare_versions.outputs.current_version }}
-                    latest_version=${{ steps.get_fedora_version.outputs.latest_version }}
-                    iso_name=${{ steps.get_fedora_version.outputs.iso_name }}
-    
-                    fullname_sed_command="s/Fedora $current_version/Fedora $latest_version/"
-                    minimal_sed_command="s/f$current_version\//f$latest_version\//"
+                  current_version=${{ needs.check-fedora-version.outputs.current_version }}
+                  latest_version=${{ needs.check-fedora-version.outputs.latest_version }}
+                  iso_name=${{ needs.check-fedora-version.outputs.iso_name }}
 
-                    # Update install.sh
-                    sed -i "s/^version=$current_version/version=$latest_version/" install.sh
-                    sed -i "s/^iso_name=.*/iso_name=$iso_name/" install.sh
-    
-                    # Update .treeinfo
-                    sed -i "s/version = $current_version/version = $latest_version/" pxe/.treeinfo
-    
-                    # Update Grub configuration
-                    sed -i "$fullname_sed_command" pxe/grub.cfg
-                    sed -i "$minimal_sed_command" pxe/grub.cfg
+                  fullname_sed_command="s/Fedora $current_version/Fedora $latest_version/"
+                  minimal_sed_command="s/f$current_version\//f$latest_version\//"
 
-                    # Update Kickstart file
-                    sed -i "$minimal_sed_command" pxe/fedora/ks.cfg
+                  # Update install.sh
+                  sed -i "s/^version=$current_version/version=$latest_version/" install.sh
+                  sed -i "s/^iso_name=.*/iso_name=$iso_name/" install.sh
 
-                    # Update README.md
-                    sed -i "$fullname_sed_command" README.md
+                  # Update .treeinfo
+                  sed -i "s/version = $current_version/version = $latest_version/" pxe/.treeinfo
+
+                  # Update Grub configuration
+                  sed -i "$fullname_sed_command" pxe/grub.cfg
+                  sed -i "$minimal_sed_command" pxe/grub.cfg
+
+                  # Update Kickstart file
+                  sed -i "$minimal_sed_command" pxe/fedora/ks.cfg
+
+                  # Update README.md
+                  sed -i "$fullname_sed_command" README.md
 
             - name: Commit changes
               run: |
-                    git add install.sh pxe/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
-                    git commit -m "Update Fedora version to ${{ steps.get_fedora_version.outputs.latest_version }}"
+                  git add install.sh pxe/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
+                  git commit -m "Update Fedora version to ${{ needs.check-fedora-version.outputs.latest_version }}"
 
             - name: Create a pull request
-              run:
-                gh pr create --title "Update Fedora version to ${{ steps.get_fedora_version.outputs.latest_version }}" --body "This PR updates the Fedora version in all relevant files to ${{ steps.get_fedora_version.outputs.latest_version }}." --head update-fedora-version --base main
-                    
+              run: gh pr create --title "Update Fedora version to ${{ needs.check-fedora-version.outputs.latest_version }}" --body "This PR updates the Fedora version in all relevant files to ${{ needs.check-fedora-version.outputs.latest_version }}." --head update-fedora-version --base main
