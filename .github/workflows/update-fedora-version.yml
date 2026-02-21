@@ -49,6 +49,10 @@ jobs:
         needs: check-fedora-version
         if: needs.check-fedora-version.outputs.current_version != needs.check-fedora-version.outputs.latest_version
         runs-on: ubuntu-latest
+        env:
+            current_version: ${{ needs.check-fedora-version.outputs.current_version }}
+            latest_version: ${{ needs.check-fedora-version.outputs.latest_version }}
+            iso_name: ${{ needs.check-fedora-version.outputs.iso_name }}
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
@@ -61,9 +65,9 @@ jobs:
 
             - name: Update files with the latest version
               run: |
-                  current_version=${{ needs.check-fedora-version.outputs.current_version }}
-                  latest_version=${{ needs.check-fedora-version.outputs.latest_version }}
-                  iso_name=${{ needs.check-fedora-version.outputs.iso_name }}
+                  current_version=${{ env.current_version }}
+                  latest_version=${{ env.latest_version }}
+                  iso_name=${{ env.iso_name }}
 
                   fullname_sed_command="s/Fedora $current_version/Fedora $latest_version/"
                   minimal_sed_command="s/f$current_version\//f$latest_version\//"
@@ -88,7 +92,10 @@ jobs:
             - name: Commit changes
               run: |
                   git add install.sh pxe/fedora/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
-                  git commit -m "Update Fedora version to ${{ needs.check-fedora-version.outputs.latest_version }}"
+                  git commit -m "Update Fedora version to ${{ env.latest_version }}"
 
             - name: Create a pull request
-              run: gh pr create --title "Update Fedora version to ${{ needs.check-fedora-version.outputs.latest_version }}" --body "This PR updates the Fedora version in all relevant files to ${{ needs.check-fedora-version.outputs.latest_version }}." --head update-fedora-version --base main
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh pr create --title "Update Fedora version to ${{ env.latest_version }}" --body "This PR updates the Fedora version in all relevant files to ${{ env.latest_version }}." --head update-fedora-version --base main
