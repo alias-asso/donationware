@@ -9,6 +9,10 @@ jobs:
     check-fedora-version:
         name: Update Fedora Version
         runs-on: ubuntu-latest
+        outputs:
+            current_version: ${{ steps.compare_versions.outputs.current_version }}
+            latest_version: ${{ steps.get_fedora_version.outputs.latest_version }}
+            iso_name: ${{ steps.get_fedora_version.outputs.iso_name }}
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
@@ -43,7 +47,7 @@ jobs:
     update-files:
         name: Update Files with Latest Fedora Version
         needs: check-fedora-version
-        if: needs.check-fedora-version.result.current_version != needs.check-fedora-version.outputs.latest_version
+        if: needs.check-fedora-version.outputs.current_version != needs.check-fedora-version.outputs.latest_version
         runs-on: ubuntu-latest
         steps:
             - name: Create a new branch for the update
