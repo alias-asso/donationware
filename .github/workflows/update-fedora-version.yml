@@ -93,6 +93,7 @@ jobs:
               run: |
                   git add install.sh pxe/fedora/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
                   git commit -m "Update Fedora version to ${{ env.latest_version }}"
+                  git push origin update-fedora-version
 
             - name: Create a pull request
               env:
