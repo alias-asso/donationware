@@ -1,6 +1,6 @@
 [general]
 family = Fedora
-version = 43
+version = 37
 arch = x86_64
 
 [stage2]

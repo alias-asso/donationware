@@ -1,7 +1,7 @@
 # ALIAS - PXE Server
 
 ## Description
-This repository contains all the necessary files to deploy the PXE server on a Fedora based system. It's designed to be used in a local network to boot other machines via network. The PXE server will provide the necessary files to boot the client machine and install Fedora 43 via network. 
+This repository contains all the necessary files to deploy the PXE server on a Fedora based system. It's designed to be used in a local network to boot other machines via network. The PXE server will provide the necessary files to boot the client machine and install Fedora 37 via network. 
 
 ## PXE server
 ### Stack
@@ -34,8 +34,8 @@ Note: In order to use the reporter correctly, you need to connect the computer t
 #### Menu options
 | Menu option | Description |
 |-------------|-------------|
-| Fedora 43 (Auto-install) | Fully automated installation of Fedora 43 (fetch files through HTTP) |
-| Fedora 43 (Auto-install) - Fallback | Same as before but fetch files through TFTP |
+| Fedora 37 (Auto-install) | Fully automated installation of Fedora 37 (fetch files through HTTP) |
+| Fedora 37 (Auto-install) - Fallback | Same as before but fetch files through TFTP |
 | Reboot | Reboot the client machine |
 | Shutdown | Shutdown the client machine |
 | UEFI Firmware Settings | Access UEFI firmware settings (if supported) |
@@ -49,7 +49,7 @@ The fallback is automatically used if the first option fails. It can be useful i
 If the client machine can't boot over network or if you don't want to allow it, you can use a Ventoy USB key and use network boot via iPXE ISO.
 
 ### Fedora installation
-As said, Fedora 43 Workstation will be installed on the computer. The installer is named `Anaconda` and shares the same specs than Red Hat OSes. The Kickstart file contains all the necessary information for the installation.
+As said, Fedora 37 Workstation will be installed on the computer. The installer is named `Anaconda` and shares the same specs than Red Hat OSes. The Kickstart file contains all the necessary information for the installation.
 
 After booting via PXE, the installation should takes around 30min.
 
@@ -60,7 +60,7 @@ Globally, when an installation is started, no action is required, except if an e
 We recommend to reset the BIOS settings of the client machine before the installation. Make sure to set the best settings, regarding disk performances, etc.
 
 #### Post-installation
-After the installation, the client machine will be shutdown. You can now boot it normally and check if Fedora 43 is correctly installed.
+After the installation, the client machine will be shutdown. You can now boot it normally and check if Fedora 37 is correctly installed.
 
 ### How-to prepare the `install.sh` script for a new Fedora version?
 1. Change the version number into the `install.sh` script (first line) and everywhere it's used (like here, in config files, ...) ;

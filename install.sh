@@ -1,5 +1,5 @@
 # Set here the Fedora version and the latest ISO name
-version=43
+version=37
 iso_name="Fedora-Workstation-Live-$version-1.6.x86_64.iso"
 
 # Define global paths/variables
