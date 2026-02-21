@@ -1,6 +1,9 @@
 name: Update Fedora Version
 on:
     workflow_dispatch:
+    push:
+        branches:
+            - feat/action-to-update-fedora
 
 jobs:
     update-fedora-version:
