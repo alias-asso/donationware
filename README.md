@@ -8,7 +8,7 @@ This repository contains all the necessary files to deploy the PXE server on a F
 | Component | Description |
 |-----------|-------------|
 | dhcp-server  | DHCP server to provide IP addresses and PXE boot information |
-| Apache   | HTTP server to serve the Fedora installation files and act as a proxy |
+| NFS      | NFS server to serve the Fedora installation files from `/srv/pxe` |
 | GRUB     | Bootloader to load the Fedora installer |
 
 ### Files
@@ -34,13 +34,13 @@ Note: In order to use the reporter correctly, you need to connect the computer t
 #### Menu options
 | Menu option | Description |
 |-------------|-------------|
-| Fedora 43 (Auto-install) | Fully automated installation of Fedora 43 (fetch files through HTTP) |
+| Fedora 43 (Auto-install) | Fully automated installation of Fedora 43 (fetch files through NFS) |
 | Fedora 43 (Auto-install) - Fallback | Same as before but fetch files through TFTP |
 | Reboot | Reboot the client machine |
 | Shutdown | Shutdown the client machine |
 | UEFI Firmware Settings | Access UEFI firmware settings (if supported) |
 
-The fallback is automatically used if the first option fails. It can be useful if the client machine has issues with HTTP.
+The fallback is automatically used if the first option fails. It can be useful if the client machine has issues with NFS.
 
 ### How to boot
 1. Connect the client machine to the local network of the PXE server (using an Ethernet cable) ;
