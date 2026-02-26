@@ -22,6 +22,22 @@ jobs:
         run: |
           ksvalidator pxe/fedora/ks.cfg
 
+  validate-grub-config:
+    name: Validate GRUB Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install GRUB2 tools
+        run: |
+          sudo apt update
+          sudo apt install -y grub2-common
+
+      - name: Validate GRUB configuration
+        run: |
+          grub-script-check pxe/grub.cfg
+
   validate-reporter-build:
     name: Validate Reporter Build
     runs-on: ubuntu-latest
