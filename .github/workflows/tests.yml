@@ -29,11 +29,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install GRUB2 tools
-        run: |
-          sudo apt update
-          sudo apt install -y grub2-common
-
       - name: Validate GRUB configuration
         run: |
           grub-script-check pxe/grub.cfg
