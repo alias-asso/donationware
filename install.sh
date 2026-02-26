@@ -47,7 +47,7 @@ wget $fedora_release/Server/x86_64/os/images/pxeboot/initrd.img -O /var/lib/tftp
 
 # Duplicate boot files for Web server
 mkdir -p $html_fedora_part
-ln -s /var/lib/tftpboot/f$version/ $html_fedora_part/f$version/
+ln -s /var/lib/tftpboot/f$version/* $html_fedora_part/
 
 # === Deploy the Fedora image ===
 mkdir -p $html_fedora/images
@@ -82,8 +82,11 @@ cp -R reporter/ /var/lib/reporter
 npm install --prefix /var/lib/reporter
 npm run build --prefix /var/lib/reporter
 
-echo "Before continuing, please set the environment variables for the Google Sheets API (SPREADSHEET_ID, SHEET_ID and TABLE_ID) of the Reporter service."
-pause "Press any key to open nano..."
+echo "Before continuing, please now put the credentials.json file at /var/lib/reporter/credentials.json."
+read anykey
+echo "Now, set the environment variables for the Google Sheets API (SPREADSHEET_ID, SHEET_ID and TABLE_ID) of the Reporter service."
+echo "Press any key to open nano..."
+read anykey
 nano reporter/reporter.service
 
 mv /var/lib/reporter/reporter.service /etc/systemd/system/
