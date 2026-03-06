@@ -1,15 +1,13 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
-import { getComputerLine, addComputerLine, updateComputerLine } from './google-sheet';
+import { upsertComputerLine } from './google-sheet';
 
 import type { Computer } from './index.d';
 
 export const computerRouter = Router();
 
 /**
- * Register a new computer who got an IP address from the DHCP server, even if the format is not correct.
- * Body example:
- * { "mac_address": "0:00:00:0:00:00:XX" }
+ * Register a new computer who got an IP address from the DHCP server.
  */
 computerRouter.post('/:macAddress', async (req: Request, res: Response) => {
     let macAddress = req.params.macAddress as string;
@@ -20,20 +18,8 @@ computerRouter.post('/:macAddress', async (req: Request, res: Response) => {
 
     const step = 0;
 
-    // Check if the computer is already registered
-    const computerLine = await getComputerLine(macAddress);
-
-    // If the computer is already registered, either Anaconda just started, or the computer got a new IP address. In both cases, we update the step just in case.
-    if (computerLine) {
-        updateComputerLine(computerLine, { macAddress, step });
-        res.status(204).end();
-        return;
-    }
-
-    // Insert the new computer
-    addComputerLine({ macAddress, step });
-    res.status(201).end();
-    return;
+    // Handle the data
+    upsertComputerLine({ macAddress, step });
 });
 
 /**
@@ -45,13 +31,7 @@ computerRouter.patch('/:macAddress', async (req: Request, res: Response) => {
 
     // Handle the data
     const data: Computer = req.body;
-
-    // Get the computer line
-    const computerLine = await getComputerLine(macAddress);
-
-    // Perform the operation
-    if (!computerLine) addComputerLine({ macAddress, ...data });
-    else updateComputerLine(computerLine, data);
+    upsertComputerLine({ macAddress, ...data });
 
     res.status(204).end();
 });

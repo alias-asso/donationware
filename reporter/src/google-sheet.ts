@@ -24,25 +24,23 @@ const bindStepToName = (step: number): string => {
     return steps[step];
 }
 
-const computerToRow = (data: Computer): (string | number | null)[][] => {
+const computerToRow = (data: Computer): (string | number | null)[] => {
     const h = (value: string) => value ?? null; // Helper to convert undefined to null
 
     const withStep = typeof data.step === 'number'; // Évite de comparer data.step à null ou undefined
     const parsedDate = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
 
     const values = [
-        [
-            "=ROW()-1", // Id
-            withStep ? bindStepToName(data.step) : null,
-            data.since ?? (withStep ? parsedDate : null),
-            h(data.macAddress),
-            h(data.model),
-            h(data.processor),
-            data.ram ? Math.round(Number(data.ram) / 1024 / 1024) : null, // Convert the RAM amount from kB to GB
-            data.ramSlots ? `${data.freeRamSlots}/${data.ramSlots}` : null, // Free RAM slots / Total RAM slots
-            h(data.diskSize),
-            h(data.gpu),
-        ]
+        "=ROW()-1", // Id
+        withStep ? bindStepToName(data.step) : null,
+        data.since ?? (withStep ? parsedDate : null),
+        h(data.macAddress),
+        h(data.model),
+        h(data.processor),
+        data.ram ? Math.ceil(Number(data.ram) / 1024 / 1024) : null, // Convert the RAM amount from kB to GB
+        data.ramSlots ? `${data.freeRamSlots}/${data.ramSlots}` : null, // Free RAM slots / Total RAM slots
+        h(data.diskSize),
+        h(data.gpu),
     ];
 
     return values;
@@ -74,7 +72,7 @@ export const getComputerLine = async (macAddress: string) => {
 }
 
 export const addComputerLine = async (data: Computer) => {
-    const values = computerToRow(data)[0]; // On récupère le premier tableau de valeurs
+    const values = computerToRow(data);
 
     // Convert values in "RowData" for the API
     const rowData = values.map(val => {
@@ -104,8 +102,8 @@ export const addComputerLine = async (data: Computer) => {
     });
 }
 
-export const updateComputerLine = async (line: number, data: Computer) => {
-    const values = computerToRow(data);
+const updateComputerLine = async (line: number, data: Computer) => {
+    const values = [computerToRow(data)];
 
     await sheets.spreadsheets.values.update({
         spreadsheetId: SPREADSHEET_ID,
@@ -115,4 +113,15 @@ export const updateComputerLine = async (line: number, data: Computer) => {
             values
         }
     });
+}
+
+export const upsertComputerLine = async (data: Computer) => {
+    try {
+        const line = await getComputerLine(data.macAddress);
+
+        if (line) await updateComputerLine(line, data);
+        else await addComputerLine(data);
+    } catch (error) {
+        console.error('Error upserting computer line:', error);
+    }
 }
