@@ -2,7 +2,8 @@
 url="http://10.0.0.1:5000/computer/"
 
 send() {
-  mac_address=$(ip a s | grep ether | xargs | cut -d ' ' -f2)
+  mac_address=$(ip r g 10.0.0.1 | cut -d ' ' -f2) # Get the MAC address of the interface used to reach the server
+  
   url_with_mac="${url}${mac_address}"
 
   body="$1"
