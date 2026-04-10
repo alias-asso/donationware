@@ -23,7 +23,7 @@ jobs:
 
                   latest_version=$(echo "$fedora_releases" | jq -r '[.[].version | select(test("^[0-9]+$"))] | max')
 
-                  iso_url=$(echo "$fedora_releases" | jq -r '.[] | select(.version == '\"$latest_version\"' and .arch == "x86_64" and .variant == "Workstation") | .link')
+                  iso_url=$(echo "$fedora_releases" | jq -r '.[] | select(.version == '\"$latest_version\"' and .arch == "x86_64" and .variant == "KDE") | .link')
                   iso_name=$(basename "$iso_url")
 
                   echo "latest_version=$latest_version" >> $GITHUB_OUTPUT

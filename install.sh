@@ -1,6 +1,6 @@
 # Set here the Fedora version and the latest ISO name
 version=43
-iso_name="Fedora-Workstation-Live-$version-1.6.x86_64.iso"
+iso_name="Fedora-KDE-Live-$version-1.6.x86_64.iso"
 
 # Define global paths/variables
 fedora_release=http://download.fedoraproject.org/pub/fedora/linux/releases/$version
@@ -56,7 +56,7 @@ mkdir -p $html_fedora/images
 wget $fedora_release/Server/x86_64/os/images/install.img -O $html_fedora/images/install.img
 
 # Download the LiveCD image, extract the squashfs and deploy it
-wget $fedora_release/Workstation/x86_64/iso/$iso_name -O /var/tmp/fedora-livecd.iso
+wget $fedora_release/KDE/x86_64/iso/$iso_name -O /var/tmp/fedora-livecd.iso
 
 mount -o loop /var/tmp/fedora-livecd.iso /mnt
 cp /mnt/LiveOS/squashfs.img $html_fedora/images/

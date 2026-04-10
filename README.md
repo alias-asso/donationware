@@ -51,8 +51,10 @@ The fallback is automatically used if the first option fails. It can be useful i
 
 Those settings are set in the [GRUB configuration file](./pxe/grub.cfg).
 
-## Fedora installation
-As said, Fedora 43 Workstation will be installed on the computer. The installer is named `Anaconda` and shares the same specs than Red Hat OSes. The Kickstart file contains all the necessary information for the installation.
+If the client machine can't boot over network or if you don't want to allow it, you can use a Ventoy USB key and use network boot via iPXE ISO.
+
+### Fedora installation
+As said, Fedora 43 KDE will be installed on the computer. The installer is named `Anaconda` and shares the same specs than Red Hat OSes. The Kickstart file contains all the necessary information for the installation.
 
 After booting via PXE, the installation should takes around 30min. The longer task is the disk formatting, and can take some hours depending of the size and type of the disk(s).
 
