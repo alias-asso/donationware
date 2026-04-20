@@ -36,7 +36,7 @@ Note: You need an active Internet connection.
 1. Connect the client machine to the local network of the PXE server (using an Ethernet cable) ;
 2. Boot into network (IPv4).
 
-If the client machine can't boot over network or if you don't want to allow it, you can use a Ventoy USB key and use network boot via iPXE ISO.
+If the client machine can't boot over network or if you don't want to allow it, you can use a Ventoy USB key and use network boot via iPXE ISO. Else, you can generate a local boot ISO using  `iso/generate-iso.sh` script and use it with a Ventoy USB key.
 
 ### Menu options
 | Menu option | Description |

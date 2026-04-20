@@ -46,7 +46,8 @@ jobs:
     update-files:
         name: Update Files with Latest Fedora Version
         needs: check-fedora-version
-        if: needs.check-fedora-version.outputs.current_version != needs.check-fedora-version.outputs.latest_version
+        if: needs.check-fedora-version.outputs.current_version !=
+            needs.check-fedora-version.outputs.latest_version
         runs-on: ubuntu-latest
         permissions:
             contents: write
@@ -74,16 +75,16 @@ jobs:
                   fullname_sed_command="s/Fedora $current_version/Fedora $latest_version/"
                   minimal_sed_command="s/f$current_version\//f$latest_version\//"
 
-                  # Update install.sh
-                  sed -i "s/^version=$current_version/version=$latest_version/" install.sh
+                  # Update bash files
+                  sed -i "s/^version=$current_version/version=$latest_version/" install.sh generate-iso.sh
                   sed -i "s/^iso_name=.*/iso_name=$iso_name/" install.sh
 
                   # Update .treeinfo
                   sed -i "s/version = $current_version/version = $latest_version/" pxe/fedora/.treeinfo
 
                   # Update Grub configuration
-                  sed -i "$fullname_sed_command" pxe/grub.cfg
-                  sed -i "$minimal_sed_command" pxe/grub.cfg
+                  sed -i "$fullname_sed_command" pxe/grub.cfg iso/grub.cfg
+                  sed -i "$minimal_sed_command" pxe/grub.cfg iso/grub.cfg
 
                   # Update Kickstart file
                   sed -i "$minimal_sed_command" pxe/fedora/ks.cfg
@@ -93,7 +94,7 @@ jobs:
 
             - name: Commit changes
               run: |
-                  git add install.sh pxe/fedora/.treeinfo pxe/grub.cfg pxe/fedora/ks.cfg README.md
+                  git add install.sh pxe/fedora/.treeinfo pxe/grub.cfg iso/grub.cfg pxe/fedora/ks.cfg README.md
                   git commit -m "Update Fedora version to ${{ env.latest_version }}"
                   git push origin update-fedora-version
 
