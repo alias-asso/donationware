@@ -1,6 +1,6 @@
 # ALIAS - PXE Server
 
-This repository contains all the necessary files to deploy the PXE server on a Fedora based system. It's designed to be used in a local network to boot other machines via network. The PXE server will provide the necessary files to boot the client machine and install Fedora 43 via network. 
+This repository contains all the necessary files to deploy the PXE server on a Fedora based system. It's designed to be used in a local network to boot other machines via network. The PXE server will provide the necessary files to boot the client machine and install Fedora 44 via network. 
 
 # PXE server
 ## Stack
@@ -41,8 +41,8 @@ If the client machine can't boot over network or if you don't want to allow it, 
 ### Menu options
 | Menu option | Description |
 |-------------|-------------|
-| Fedora 43 (Auto-install) | Fully automated installation of Fedora 43 (fetch files through HTTP) |
-| Fedora 43 (Auto-install) - Fallback | Same as before but fetch files through TFTP |
+| Fedora 44 (Auto-install) | Fully automated installation of Fedora 43 (fetch files through HTTP) |
+| Fedora 44 (Auto-install) - Fallback | Same as before but fetch files through TFTP |
 | Reboot | Reboot the client machine |
 | Shutdown | Shutdown the client machine |
 | UEFI Firmware Settings | Access UEFI firmware settings (if supported) |
@@ -54,7 +54,7 @@ Those settings are set in the [GRUB configuration file](./pxe/grub.cfg).
 If the client machine can't boot over network or if you don't want to allow it, you can use a Ventoy USB key and use network boot via iPXE ISO.
 
 ### Fedora installation
-As said, Fedora 43 KDE will be installed on the computer. The installer is named `Anaconda` and shares the same specs than Red Hat OSes. The Kickstart file contains all the necessary information for the installation.
+As said, Fedora 44 KDE will be installed on the computer. The installer is named `Anaconda` and shares the same specs than Red Hat OSes. The Kickstart file contains all the necessary information for the installation.
 
 After booting via PXE, the installation should takes around 30min. The longer task is the disk formatting, and can take some hours depending of the size and type of the disk(s).
 
@@ -72,7 +72,7 @@ A SSH server will be available during the installation. You can connect to it us
 The installer will deploy a standard Fedora installation with the default settings, like the Live image. You can check the [Kickstart](./pxe/fedora/ks.cfg) file to see the exact configuration.
 
 ### Post-installation
-After the installation, the client machine will be shutdown. You can now boot it normally and check if Fedora 43 is correctly installed. Also, you may disable the network boot in the BIOS settings to avoid any issue during the next boots.
+After the installation, the client machine will be shutdown. You can now boot it normally and check if Fedora 44 is correctly installed. Also, you may disable the network boot in the BIOS settings to avoid any issue during the next boots.
 
 ## How-to prepare the `install.sh` script for a new Fedora version?
 1. Run the GitHub Action [Update Fedora Version](https://github.com/alias-asso/donationware/actions/workflows/update-fedora-version.yml) ;
