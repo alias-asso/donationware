@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-version=43
+version=44
 fedora_release="http://download.fedoraproject.org/pub/fedora/linux/releases/$version"
 path_base="/tmp/fedora-donationware-$version"
 

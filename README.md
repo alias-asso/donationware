@@ -41,7 +41,7 @@ If the client machine can't boot over network or if you don't want to allow it, 
 ### Menu options
 | Menu option | Description |
 |-------------|-------------|
-| Fedora 44 (Auto-install) | Fully automated installation of Fedora 43 (fetch files through HTTP) |
+| Fedora 44 (Auto-install) | Fully automated installation of Fedora 44 (fetch files through HTTP) |
 | Fedora 44 (Auto-install) - Fallback | Same as before but fetch files through TFTP |
 | Reboot | Reboot the client machine |
 | Shutdown | Shutdown the client machine |
