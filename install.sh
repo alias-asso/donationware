@@ -1,6 +1,6 @@
 # Set here the Fedora version and the latest ISO name
-version=43
-iso_name="Fedora-KDE-Live-$version-1.6.x86_64.iso"
+version=44
+iso_name=Fedora-KDE-Desktop-Live-44-1.7.x86_64.iso
 
 # Define global paths/variables
 fedora_release=http://download.fedoraproject.org/pub/fedora/linux/releases/$version
