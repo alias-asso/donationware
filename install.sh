@@ -3,7 +3,7 @@ version=44
 iso_name=Fedora-KDE-Desktop-Live-44-1.7.x86_64.iso
 
 # Define global paths/variables
-fedora_release=http://download.fedoraproject.org/pub/fedora/linux/releases/$version
+fedora_release=https://download.fedoraproject.org/pub/fedora/linux/releases/$version
 html=/var/www/html
 html_fedora_part=$html/f$version
 html_fedora=$html_fedora_part/x86_64
